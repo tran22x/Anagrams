@@ -59,7 +59,11 @@ public class AnagramDictionary {
     }
 
     public boolean isGoodWord(String word, String base) {
-        return true;
+        //checking that the word does not contain the base word as a substring
+        if (wordSet.contains(word) && !word.toLowerCase().contains(base.toLowerCase())) {
+            return true;
+        }
+        return false;
     }
 
     public List<String> getAnagrams(String targetWord) {
@@ -73,7 +77,18 @@ public class AnagramDictionary {
     }
 
     public List<String> getAnagramsWithOneMoreLetter(String word) {
+        //find out what anagrams can be formed with one more letter
         ArrayList<String> result = new ArrayList<String>();
+        for (int i = 97; i <= 122; i++) { //loop through the alphabet
+            String s = word + (char) i; //create the appended word
+            sortLetters(s);
+            if (lettersToWord.containsKey(s)) {
+                result.add(lettersToWord.get(s));
+            }
+
+        }
+        //check the given word
+
         return result;
     }
 
