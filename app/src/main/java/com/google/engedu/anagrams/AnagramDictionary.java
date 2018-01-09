@@ -18,6 +18,7 @@ package com.google.engedu.anagrams;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -31,17 +32,29 @@ public class AnagramDictionary {
     private static final int DEFAULT_WORD_LENGTH = 3;
     private static final int MAX_WORD_LENGTH = 7;
     private Random random = new Random();
-    private List<String> wordList = new ArrayList<String>();
-    private HashSet wordSet = new HashSet();
-    private HashMap<String, ArrayList<String>> lettersToWord = new HashMap<>();
+    private List<String> wordList = new ArrayList<String>(); //original copy of dictionary
+    private HashSet wordSet = new HashSet(); //copy of the dictionary to look up whether a word is valid
+    private HashMap<String, ArrayList<String>> lettersToWord = new HashMap<>(); // groupings of anagrams
 
     public AnagramDictionary(Reader reader) throws IOException {
         BufferedReader in = new BufferedReader(reader);
         String line;
         while((line = in.readLine()) != null) {
             String word = line.trim();
-            wordList.add(word);
+            wordList.add(word); //add word to ArrayList
+            wordSet.add(word); //add word to HashSet
+            String sw = sortLetters(word);
+
+            if (lettersToWord.containsKey(sw)) {
+                lettersToWord.get(sw).add(word);
+            }
+            else {
+                ArrayList<String> a = new ArrayList<>();
+                a.add(word);
+                lettersToWord.put(sw, a);
+            }
         }
+
 
     }
 
